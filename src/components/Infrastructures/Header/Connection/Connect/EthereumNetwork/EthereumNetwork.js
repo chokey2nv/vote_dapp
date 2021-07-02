@@ -45,6 +45,10 @@ const style = makeStyles(theme => ({
     },
     divider : {
         background : theme.colors.textSecondary,
+    },
+    avatar : {
+        width : 50,
+        height : 50,
     }
 }))
 function GiftDappEthereumWallets({web3, onSelect, onClose, ...props}) {
@@ -75,7 +79,7 @@ function GiftDappEthereumWallets({web3, onSelect, onClose, ...props}) {
                             className : classes.list
                         }}/>
                         <ListItemIcon>
-                            <img src={avatar}/>
+                            <img className={classes.avatar} src={avatar}/>
                         </ListItemIcon>
                         {/* <ListItemSecondaryAction>
                             <img src={avatar}/>
