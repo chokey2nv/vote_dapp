@@ -1,8 +1,13 @@
 import { makeStyles } from '@material-ui/core'
+import { ThumbDown, ThumbUp } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
+import classNames from 'classnames';
 import { useSelector } from 'react-redux';
+import { CustomButton } from '../../includes';
 import proposalContract from '../../utils/web3/proposalContract';
 import { walletStrings, WALLET_REDUCER_NAME } from '../Infrastructures';
+import VoteDetails from './VoteDetails/VoteDetails';
+import { VOTE_TYPES } from '../../utils';
 const style = makeStyles(({colors, breakpoints}) => ({
     root : {
         display : "flex",
@@ -47,27 +52,49 @@ const style = makeStyles(({colors, breakpoints}) => ({
         fontSize : 48,
     },
     voteDown : {
+    },
+    btnContainer : {
+        display : "flex",
+        marginTop : 20,
+    },
+    voteBtn : {
+        margin : 10,
+        alignItems : "center",
+    },
+    icon : {
+        marginRight : 5
+    },
+    btnNo : {
+        color : colors.black
     }
 }))
 export default function Vote () {
     const classes = style(),
         [state, _setState] = useState({
             votesForYes : 0, votesForNo : 0,
-            voteFee : 0, votes : null,
+            voteFee : 0, vote : null,
             proposalId : null
         }),
-        {votesForYes, votesForNo, proposalId, voteFee} = state,
+        {votesForYes, votesForNo, vote, proposalId, voteFee} = state,
         setState = _state => _setState(state=>({...state, ..._state})),
         address = useSelector(state=>state[WALLET_REDUCER_NAME][walletStrings.address]),
         getBlockData = async () => {
-            const [voteFee, votesForYes, votesForNo, proposalId]  = 
+            const [voteFee, vote, votesForYes, votesForNo, proposalId]  = 
                 await Promise.all([
                     proposalContract().voteFee(),
+                    proposalContract().getVotes(),
                     proposalContract().votesForYes(),
                     proposalContract().votesForNo(),
                     proposalContract().proposalId(),
                 ]);
-            setState({voteFee, votesForYes, votesForNo, proposalId});
+            setState({voteFee, vote, votesForYes, votesForNo, proposalId});
+        },
+        voteProposal = async voteType => {
+            await proposalContract().vote(voteType);
+            getBlockData();
+        },
+        voteListener = () => {
+            
         };
     useEffect(() => {
         getBlockData();
@@ -79,7 +106,7 @@ export default function Vote () {
             <div className={classes.headerContainer}>
                 <div className={classes.header}>Vote For Proposal</div>
                 <div className={classes.subheader}>Let us know your position about this proposal (ID : {proposalId}) by voting!</div>
-                <div className={classes.subheader}>You will require a token of {voteFee} ETH for this vote</div>
+                <div className={classes.subheader}>You will require a token of <strong>{voteFee || 0} ETH </strong>for this vote</div>
             </div>
             <div className={classes.voteCount}>
                 <div className={classes.countContainer}>
@@ -88,6 +115,27 @@ export default function Vote () {
                     <div className={classes.voteDown}>{votesForNo}</div>
                 </div>
             </div>
+            <div className={classes.btnContainer}>
+                <CustomButton 
+                    onClick={()=>voteProposal(VOTE_TYPES.YES)}
+                    classes={{
+                        btn : classes.voteBtn
+                    }}
+                >
+                    <ThumbUp className={classNames(classes.icon, classes.btnYes)}/> YES
+                </CustomButton>
+                <CustomButton 
+                    onClick={()=>voteProposal(VOTE_TYPES.NO)}
+                    classes={{
+                        btn : classNames(classes.voteBtn, classes.btnNo),
+                    }}
+                >
+                    <ThumbDown className={classNames(classes.icon, classes.btnNo)}/> NO
+                </CustomButton>
+            </div>
+            <VoteDetails
+                vote={vote}
+            />
         </div>
     )
 }

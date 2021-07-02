@@ -7,3 +7,7 @@ export const WALLET_KEYS = {
 export const CONTRACTS = {
     PROPOSAL : "proposal",
 }
+export const VOTE_TYPES = {
+    YES : 2,
+    NO : 1
+}

@@ -65,12 +65,14 @@ function Connect() {
         setState({openDialog : true, dialogType : networkType});
     }, []),
     connectToWallet = useCallback(wallet => {
-        let networkType;
-        if(wallet === WALLET_KEYS.TRUSTWALLET)
-            networkType = WALLET_KEYS.BINANCE;
-        else networkType = WALLET_KEYS.ETHEREUM;
-        walletConnection(contractAddresses, wallet, (error) => !error && successToast("Connected!")(dispatch))
-        setState({dialogType : wallet})
+        (async () => {
+            let networkType;
+            if(wallet === WALLET_KEYS.TRUSTWALLET)
+                networkType = WALLET_KEYS.BINANCE;
+            else networkType = WALLET_KEYS.ETHEREUM;
+            await walletConnection(wallet)
+            setState({dialogType : wallet})
+        })();
     }, []),
     closeDialog = () => {
         setState({dialogType : "", openDialog : false});

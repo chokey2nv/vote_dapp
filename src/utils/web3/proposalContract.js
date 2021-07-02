@@ -19,8 +19,7 @@ export default function proposalContract(instance){
         voteFee : async() => parseInt(await voteFee()) / (10 ** 18),
         getVotes : (userAddress) => instance?.methods?.getVote(userAddress || address).call(),
         vote : async (userAddress) => {
-
-            return instance?.methods?.vote(userAddress).send({address, value : await voteFee()})
+            return instance?.methods?.vote(userAddress).send({from : address, value : await voteFee()})
         },
         clean : async () => instance?.methods?.clean().call(),
         votesForYes : async () => instance?.methods?.votesForYes().call(),
