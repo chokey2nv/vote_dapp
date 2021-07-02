@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core'
 import { ThumbDown, ThumbUp } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-import { CustomButton } from '../../includes';
+import { useDispatch, useSelector } from 'react-redux';
+import { CustomButton, errorToast } from '../../includes';
 import proposalContract from '../../utils/web3/proposalContract';
 import { walletStrings, WALLET_REDUCER_NAME } from '../Infrastructures';
 import VoteDetails from './VoteDetails/VoteDetails';
@@ -70,6 +70,7 @@ const style = makeStyles(({colors, breakpoints}) => ({
 }))
 export default function Vote () {
     const classes = style(),
+        dispatch = useDispatch(),
         [state, _setState] = useState({
             votesForYes : 0, votesForNo : 0,
             voteFee : 0, vote : null,
@@ -89,12 +90,14 @@ export default function Vote () {
                 ]);
             setState({voteFee, vote, votesForYes, votesForNo, proposalId});
         },
-        voteProposal = async voteType => {
+        voteProposal = useCallback(async (voteType)=>{
+            if(vote !== "0") 
+                return errorToast("You have already voted for this proposal!")(dispatch);
             await proposalContract().vote(voteType);
             getBlockData();
-        },
+        }, [vote]),
         voteListener = () => {
-            
+
         };
     useEffect(() => {
         getBlockData();
