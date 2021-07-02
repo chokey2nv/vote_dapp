@@ -21,7 +21,7 @@ const walletUtil = {
             [walletStrings.networkType] : null,
             [walletStrings.networkWallet] : null,
         })(store.dispatch);
-        window.location.reload();
+        // window.location.reload();
     },
     shortAddress : address => {
         if(!address) return "...";

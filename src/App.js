@@ -9,10 +9,6 @@ import { CustomSnackbar } from './includes';
 import $ from 'jquery';
 function App() {
     const theme = useTheme(); 
-    useEffect(() => {
-        $("html").css("background", appTheme.page);
-        $("html").css("color", appTheme.text);
-    }, []);
     return <Router history={history}>
         <ThemeProvider theme={{
             ...theme, colors : appTheme
