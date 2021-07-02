@@ -34,7 +34,7 @@ const style = makeStyles(theme => ({
         display : "flex",
         justifyContent : "space-between",
         alignItems : "center",
-        color : theme.colors.textSecondary,
+        color : theme.colors.textAccent,
         margin : 20,
     },
     iconBtn : {

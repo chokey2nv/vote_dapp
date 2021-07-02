@@ -45,7 +45,7 @@ const walletUtil = {
         return balance / 10 ** 18;
     },
     SUPPORTED_NETWOR_IDS : [
-        3,4
+        4
     ],
     ETHEREUM_NETWORK_IDS : [
         1,3,4,
