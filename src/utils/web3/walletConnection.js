@@ -5,9 +5,10 @@ import { errorToast, warningToast } from "../../includes";
 import accountListeners, { binanceListeners } from "./accountListeners";
 import getContracts from "./getContract";
 import { utilStrings, UTIL_REDUCER_NAME } from "../config";
+import contractAddresses from './addresses.json';
 import walletUtil from "./walletUtil";
 import { WALLET_KEYS } from "../constants";
-export default async function walletConnection(contractAddresses, networkWallet, callback){
+export default async function walletConnection(networkWallet, callback){
     const dispatch = store.dispatch,
     ethereum = window.ethereum;
     try{        
@@ -19,6 +20,9 @@ export default async function walletConnection(contractAddresses, networkWallet,
         const addresses = contractAddresses && contractAddresses[
             walletUtil.getTruffleNetworkName(networkId)
         ];
+        console.log('*************************************** contract address ***********************************')
+        console.log(addresses, contractAddresses)
+        console.log('*************************************** contract address ***********************************')
         const accounts = await web3.eth.getAccounts(),
         contracts = await getContracts(web3, addresses),
         address = accounts && accounts[0];
@@ -31,6 +35,7 @@ export default async function walletConnection(contractAddresses, networkWallet,
         walletActions({
             [walletStrings.web3] : web3,
             [walletStrings.addresses] : addresses,
+            [walletStrings.contractAddresses] : contractAddresses,
         })(dispatch);
         if(!address){
             if(ethereum){

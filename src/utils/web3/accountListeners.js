@@ -28,8 +28,7 @@ function binanceListeners() {
         const walletReducer = store.getState()[WALLET_REDUCER_NAME],
         {
             [walletStrings.address] : address,
-            [walletStrings.networkWallet] : networkWallet,
-            [walletStrings.contractAddresses] : contractAddresses
+            [walletStrings.networkWallet] : networkWallet
         } = walletReducer;
         if (accounts.length === 0) {
             // MetaMask is locked or the user has not connected any accounts
@@ -46,8 +45,7 @@ function binanceListeners() {
                 [utilStrings.storageNetworkWallet] : storageNetworkWallet
             } = utilReducer,
             networkWallet = localStorage.getItem(storageNetworkWallet);
-            walletConnection(contractAddresses, networkWallet)
-            .then(()=>successToast("Connected to new account!")(dispatch));
+            await walletConnection(networkWallet);
         }
     });
     BinanceChain.on('disconnect', (...error) => {
@@ -78,7 +76,6 @@ function accountListeners(){
         {
             [walletStrings.address] : address,
             [walletStrings.networkWallet] : networkWallet,
-            [walletStrings.contractAddresses] : contractAddresses
         } = walletReducer;
         if (accounts.length === 0) {
             // MetaMask is locked or the user has not connected any accounts
@@ -95,8 +92,7 @@ function accountListeners(){
                 [utilStrings.storageNetworkWallet] : storageNetworkWallet
             } = utilReducer,
             networkWallet = localStorage.getItem(storageNetworkWallet);
-            walletConnection(contractAddresses, networkWallet)
-            .then(()=>successToast("Connected to new account!")(dispatch));
+            await walletConnection(networkWallet);
         }
     });
     ethereum.on('disconnect', (...error) => {

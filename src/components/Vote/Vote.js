@@ -92,6 +92,9 @@ export default function Vote () {
         voteProposal = async voteType => {
             await proposalContract().vote(voteType);
             getBlockData();
+        },
+        voteListener = () => {
+            
         };
     useEffect(() => {
         getBlockData();

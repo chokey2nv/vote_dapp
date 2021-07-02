@@ -33,7 +33,7 @@ export default function Setup () {
                 const networkWallet = localStorage.getItem(STORAGE_NETWORK_WALLET);
                 //if there no networktype in the storage, don't login, allow use to choose network
                 if(networkWallet){
-                    walletConnection(contractAddresses, networkWallet, false)
+                    await walletConnection(networkWallet, false)
                 }
             }catch(error) {
                 errorToast(error.message)(dispatch);
@@ -41,10 +41,6 @@ export default function Setup () {
             
         })();
     }, [])
-    return (
-        <div className={classes.root}>
-            
-        </div>
-    )
+    return null;
 }
 export {Setup}

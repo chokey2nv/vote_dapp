@@ -18,7 +18,6 @@ export const walletStrings = {
     web3 : "web3",
     contracts : "contracts",
     networkType : "networkType",
-    giftContractAddress : "giftContractAddress",
 }
 /**
  * GENERAL REDUCER : To handle the common stuffs like notifications and alerts

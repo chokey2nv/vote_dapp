@@ -26,10 +26,6 @@ const style = makeStyles(theme => ({
         minWidth : 300,
         padding : 10,
     },
-    icon : {
-        width : 25,
-        height : 25,
-    },
     header : {
         display : "flex",
         justifyContent : "space-between",
@@ -41,6 +37,8 @@ const style = makeStyles(theme => ({
         padding : 5
     },
     icon : {
+        width : 25,
+        height : 25,
         color : theme.colors.textSecondary,
     },
     divider : {
