@@ -17,6 +17,10 @@ const style = makeStyles(theme => ({
         alignItems : "center",
         justifyContent : "space-between"
     },
+    logo : {
+        height : 50,
+        width : 50,
+    }
 }));
 /**
  * @desc 
@@ -36,7 +40,7 @@ function Header() {
             }}>
                 <Toolbar>
                     <div className={classes.container}>
-                        <img src="/rigel_icon.png" className={classes.logo}/>
+                        <img src="/assets/logo.png" className={classes.logo}/>
                         {address ? <Connected/> : <Connect/>}
                     </div>
                 </Toolbar>
