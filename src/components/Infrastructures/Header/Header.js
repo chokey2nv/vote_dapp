@@ -29,7 +29,7 @@ const style = makeStyles(theme => ({
  * 
  * @param {*} props 
  */
-function Header() {
+function Header({}) {
     const classes = style();
     const walletReducer = useSelector(state=>state[WALLET_REDUCER_NAME]),
     {[walletStrings.address] : address } = walletReducer;
@@ -40,7 +40,7 @@ function Header() {
             }}>
                 <Toolbar>
                     <div className={classes.container}>
-                        <img src="/assets/logo.png" className={classes.logo}/>
+                        {!address && <img src="/assets/logo.png" className={classes.logo}/>}
                         {address ? <Connected/> : <Connect/>}
                     </div>
                 </Toolbar>

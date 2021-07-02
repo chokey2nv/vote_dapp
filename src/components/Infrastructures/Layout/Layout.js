@@ -3,6 +3,9 @@ import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core'
 import { Route } from 'react-router-dom';
 import Header from '../Header/Header';
+import { useSelector } from 'react-redux';
+import { walletStrings, WALLET_REDUCER_NAME } from '../wallet';
+import ConnectionInstruction from '../ConnectionInstruction/ConnectionInstruction';
 const style = makeStyles(({breakpoints, colors}) => ({
     root : {
     },
@@ -11,6 +14,10 @@ const style = makeStyles(({breakpoints, colors}) => ({
     appPager : {
         margin : "0px 20px",
         minHeight : 300,
+        // height : "calc(100vh - 170px)",
+        display : 'flex',
+        alignItems : "center",
+        justifyContent : "center",
     },
     stage : {
         marginTop : 70,
@@ -31,7 +38,8 @@ const style = makeStyles(({breakpoints, colors}) => ({
     }
 }))
 function Layout({component : Component, ...props}) {
-    const classes = style();
+    const classes = style(),
+    address = useSelector(state=>state[WALLET_REDUCER_NAME][walletStrings.address]);
     return (
         <Route {...props} className={classes.root} component={routeProps=>{
             return <div className={classes.display}>
@@ -41,7 +49,7 @@ function Layout({component : Component, ...props}) {
                     }}
                 />
                 <div className={classNames(classes.appPager, classes.stage)}>
-                    <Component {...routeProps} />
+                    {address ? <Component {...routeProps} /> : <ConnectionInstruction/>}
                 </div>
             </div>
         }}/>

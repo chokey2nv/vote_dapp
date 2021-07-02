@@ -7,7 +7,7 @@ import { CustomButton, errorToast } from '../../includes';
 import proposalContract from '../../utils/web3/proposalContract';
 import { walletStrings, WALLET_REDUCER_NAME } from '../Infrastructures';
 import VoteDetails from './VoteDetails/VoteDetails';
-import { VOTE_TYPES } from '../../utils';
+import { CONTRACTS, VOTE_TYPES } from '../../utils';
 const style = makeStyles(({colors, breakpoints}) => ({
     root : {
         display : "flex",
@@ -79,6 +79,10 @@ export default function Vote () {
         {votesForYes, votesForNo, vote, proposalId, voteFee} = state,
         setState = _state => _setState(state=>({...state, ..._state})),
         address = useSelector(state=>state[WALLET_REDUCER_NAME][walletStrings.address]),
+        contracts = useSelector(state=>state[WALLET_REDUCER_NAME][walletStrings.contracts]),
+        {
+            [CONTRACTS.PROPOSAL] : _contract
+        } = contracts || {},
         getBlockData = async () => {
             const [voteFee, vote, votesForYes, votesForNo, proposalId]  = 
                 await Promise.all([
@@ -95,10 +99,12 @@ export default function Vote () {
                 return errorToast("You have already voted for this proposal!")(dispatch);
             await proposalContract().vote(voteType);
             getBlockData();
-        }, [vote]),
-        voteListener = () => {
-
-        };
+        }, [vote]);
+        if(_contract) _contract.events.VoteCasted({})
+        .on('data', function(event){
+            getBlockData();
+        })
+        .on('error', console.error);
     useEffect(() => {
         getBlockData();
     }, [address]);
@@ -137,7 +143,7 @@ export default function Vote () {
                 </CustomButton>
             </div>
             <VoteDetails
-                vote={vote}
+                {...state}
             />
         </div>
     )

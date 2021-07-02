@@ -11,6 +11,10 @@ const style = makeStyles(({breakpoints, colors}) => ({
         alignItems : "center",
         background : colors.success,
         borderRadius : 5,
+        [breakpoints.down("xs")] : {
+            width : "100%",
+            justifyContent : "space-between",
+        }
     },
     amount_add_holder : {
         padding : 5,
