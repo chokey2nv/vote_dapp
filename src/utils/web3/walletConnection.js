@@ -14,7 +14,7 @@ export default async function walletConnection(contractAddresses, networkWallet,
         let web3 = await getWeb3(networkWallet),
         networkId = await web3.eth.net.getId();
         if(!walletUtil.isSupportedNetwork(parseInt(networkId))){
-            return errorToast("Network not support for now! Supported Networks : ROPSTEN, RINKEBY & BSC_TEST")(dispatch);
+            return errorToast("Network not support for now! Supported Networks : RINKEBY")(dispatch);
         }
         const addresses = contractAddresses && contractAddresses[
             walletUtil.getTruffleNetworkName(networkId)

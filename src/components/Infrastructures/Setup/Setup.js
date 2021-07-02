@@ -31,7 +31,7 @@ export default function Setup () {
         (async()=>{
             try{
                 const networkWallet = localStorage.getItem(STORAGE_NETWORK_WALLET);
-                //if there no networktype in the storage, don't login, allow use to choice network
+                //if there no networktype in the storage, don't login, allow use to choose network
                 if(networkWallet){
                     walletConnection(contractAddresses, networkWallet, false)
                 }

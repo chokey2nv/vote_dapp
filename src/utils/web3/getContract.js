@@ -9,7 +9,7 @@ export async function getContractInstance(web3, contractDefinition, address){
     // get network ID and the deployed address
     try{
         let instance;
-        //only gift contract enters
+        //contract enters
         if(contractDefinition){
             const networkId = await web3.eth.net.getId();
             //address is always passed, just leaving this here
